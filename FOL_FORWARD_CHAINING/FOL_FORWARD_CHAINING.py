@@ -1,4 +1,7 @@
 # Forward Chaining for First-Order Logic
+from contextlib import redirect_stdout
+from io import StringIO
+from pathlib import Path
 
 # Facts in the Knowledge Base
 KB = {
@@ -153,4 +156,19 @@ def forward_chaining(KB, rules, query):
 # Query
 query = ("Criminal", "Robert")
 
-forward_chaining(KB, rules, query)
+
+def main():
+    output = StringIO()
+    with redirect_stdout(output):
+        forward_chaining(KB, rules, query)
+
+    result = output.getvalue()
+    print(result, end="")
+
+    output_path = Path(__file__).with_name("output.txt")
+    output_path.write_text(result, encoding="utf-8")
+    print(f"\nOutput saved to {output_path}")
+
+
+if __name__ == "__main__":
+    main()
